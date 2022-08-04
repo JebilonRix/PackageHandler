@@ -1,0 +1,14 @@
+{
+  "name": "com.redpanda.package-handler.editor",
+  "version": "1.0.0",
+  "displayName": "RedPanda MyTools",
+  "description": "Tool for package manager.",
+  "bundledDependencies": true,
+  "keywords": [
+    "Tools"
+  ],
+  "author": {
+    "name": "RedPanda"
+  },
+  "type": "tool"
+}
