@@ -35,7 +35,7 @@ namespace RedPanda.PackageHandler
                 await Task.Delay(100);
             }
 
-            //Debug.Log($"{packageName} is loaded.");
+            Debug.Log($"{packageName} is loaded.");
         }
         private static void AddGitPackages(string[] companyName, string[] packageName, string[] url)
         {
@@ -127,7 +127,7 @@ namespace RedPanda.PackageHandler
             sw.Write(text);
             sw.Close();
 
-            //Debug.Log("Packages are added to project from git.");
+            Debug.Log("Packages are added to project from git.");
 
             Client.Resolve();
         }
