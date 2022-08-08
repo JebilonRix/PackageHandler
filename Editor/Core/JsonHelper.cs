@@ -57,8 +57,8 @@ namespace RedPanda.PackageHandler
         }
         private static string GetPath(string fileName)
         {
-            //to do: burayý ayarla
-            return Application.dataPath + "/" + fileName;
+            return "../Library/PackageCache/com.redpanda.package-handler.editor@0b8ae695fb" + "/" + fileName;
+            //return Application.dataPath + "/" + fileName;
         }
         private static string ReadFile(string path)
         {
