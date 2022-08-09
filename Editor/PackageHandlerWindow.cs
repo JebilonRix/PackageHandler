@@ -17,7 +17,7 @@ namespace RedPanda.PackageHandler
         [SerializeField] private string _url;
 
         private readonly List<string> _unityPackagesToInstall = new();
-        private const string _fileName = "GitLinesSave.json";
+        private const string _fileName = "GitLinesSave.json"; //name of json file.
         private SerializedObject _window;
 
         #endregion Fields And Properties
@@ -25,15 +25,23 @@ namespace RedPanda.PackageHandler
         #region Unity Methods
 
         [MenuItem("MyTools/PackageHandler")]
+        //Opens the window of the package handler.
         public static void Open() => GetWindow(typeof(PackageHandlerWindow), false, "Package Handler");
-        private void OnEnable() => _window = new SerializedObject(this); //Sets the window as serialized object
-        private void OnGUI() => EditorLayout(); //Includes editor gui layout elements
+
+        //Sets the window as serialized object.
+        private void OnEnable() => _window = new SerializedObject(this);
+
+        //Includes editor gui layout elements.
+        private void OnGUI() => EditorLayout();
 
         #endregion Unity Methods
 
         #region Private Methods
 
+        //Unloads package manager and adds default packages to the package manager.
         private async void ClearPackages() => await DefaultPackage.ReplacePackagesManifestFromGit("4a4f95adb4f1b530bf9914a99f5a069d");
+
+        //Editor layout attributes.
         private void EditorLayout()
         {
             position.Set(0, 0, 100, 100);
@@ -44,12 +52,14 @@ namespace RedPanda.PackageHandler
             }
             if (GUILayout.Button("Add Packages To PackageManager"))
             {
-                InstallGitPackages(); // Sets packages from git
+                // Sets packages from git.
+                InstallGitPackages();
 
-                InstallUnityPackages(SetUnityPackages(_ideType)); //Sets unity packages
-
+                //Sets unity packages.
+                InstallUnityPackages(SetUnityPackages(_ideType));
                 InstallPackage.InstallUnityPackages(_unityPackagesToInstall.ToArray());
 
+                //Clears list of packages to install.
                 _unityPackagesToInstall.Clear();
             }
 
@@ -67,13 +77,14 @@ namespace RedPanda.PackageHandler
 
                 if (GUILayout.Button("Save"))
                 {
+                    //Saves git package infomation.
                     JsonHelper.SaveToJson<PackageLines>(_gitPackagesToInstall, _fileName);
                     _window.Update();
-
                     AssetDatabase.Refresh();
                 }
                 if (GUILayout.Button("Load"))
                 {
+                    //Loads git package infomation.
                     _gitPackagesToInstall = JsonHelper.LoadFromJson<PackageLines>(_fileName);
                     _window.Update();
                 }
@@ -86,11 +97,13 @@ namespace RedPanda.PackageHandler
         }
         private void InstallUnityPackages(string[] array)
         {
+            //If array is empty, cancels process.
             if (array == null)
             {
                 return;
             }
 
+            //Adds packages one by one.
             for (int i = 0; i < array.Length; i++)
             {
                 _unityPackagesToInstall.Add(array[i]);
@@ -100,13 +113,16 @@ namespace RedPanda.PackageHandler
         {
             //Removes duplicates
             List<UnityPackageTypes> noDuplicates = _unityPackages.Distinct().ToList();
+
             //Count of new list
             int length = noDuplicates.Count;
 
             //Adjusts to array which is returned.
+            //Last index is for ide.
+            //Last index - 1 is for test framework.
             string[] packages = new string[length + 2];
 
-            //Sets the package of ide that is selected.
+            //Sets the package of ide which is selected.
             switch (type)
             {
                 case IdeType.VisualStudio:
@@ -122,7 +138,7 @@ namespace RedPanda.PackageHandler
                     break;
             }
 
-            //this is for debugging from ide
+            //This is for debugging from ide. So, adds to package list.
             packages[packages.Length - 1] = "test-framework";
 
             for (int i = 0; i < length; i++)
@@ -134,6 +150,7 @@ namespace RedPanda.PackageHandler
         }
         private static string GetUnityPackageName(UnityPackageTypes type)
         {
+            //Returns the name of the package.
             return type switch
             {
                 UnityPackageTypes.Cinemachine => "cinemachine",
@@ -153,7 +170,7 @@ namespace RedPanda.PackageHandler
                 return;
             }
 
-            //sets structure of lines
+            //Sets structure of lines
             string[] companyNames = new string[count];
             string[] packageNames = new string[count];
             string[] urls = new string[count];
@@ -165,7 +182,7 @@ namespace RedPanda.PackageHandler
                 urls[i] = _gitPackagesToInstall[i].url;
             }
 
-            //Sends to installer
+            //Sends to installer.
             InstallPackage.InstallGitPackages(companyNames, packageNames, urls);
         }
 

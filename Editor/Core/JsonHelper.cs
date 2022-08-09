@@ -62,7 +62,7 @@ namespace RedPanda.PackageHandler
             //Check if the file exists in my documents folder.
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/" + directoryName;
 
-            //if file doesn't exist in my documents folder, creates directory.
+            //if file doesn't exist in "my documents" folder, creates directory.
             if (!File.Exists(path))
             {
                 Directory.CreateDirectory(path);
