@@ -94,7 +94,7 @@ namespace RedPanda.PackageHandler
             }
 
             //If manifest includes package name which will be added to installer, it will be removed from new package names.
-            for (int i = 0; i < localPackageName.Count; i++)
+            for (int i = localPackageName.Count - 1; i >= 0; i--)
             {
                 for (int j = 0; j < packageNamesFromManifest.Count; j++)
                 {
