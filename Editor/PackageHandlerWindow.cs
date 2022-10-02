@@ -25,21 +25,32 @@ namespace RedPanda.PackageHandler
         #region Unity Methods
 
         [MenuItem("MyTools/PackageHandler")]
-        //Opens the window of the package handler.
-        public static void Open() => GetWindow(typeof(PackageHandlerWindow), false, "Package Handler");
+        public static void Open()
+        {
+            GetWindow(typeof(PackageHandlerWindow), false, "Package Handler");
+        }
 
         //Sets the window as serialized object.
-        private void OnEnable() => _window = new SerializedObject(this);
+        private void OnEnable()
+        {
+            _window = new SerializedObject(this);
+        }
 
         //Includes editor gui layout elements.
-        private void OnGUI() => EditorLayout();
+        private void OnGUI()
+        {
+            EditorLayout();
+        }
 
         #endregion Unity Methods
 
         #region Private Methods
 
         //Unloads package manager and adds default packages to the package manager.
-        private async void ClearPackages() => await DefaultPackage.ReplacePackagesManifestFromGit("4a4f95adb4f1b530bf9914a99f5a069d");
+        private async void ClearPackages()
+        {
+            await DefaultPackage.ReplacePackagesManifestFromGit("4a4f95adb4f1b530bf9914a99f5a069d");
+        }
 
         //Editor layout attributes.
         private void EditorLayout()
@@ -95,13 +106,12 @@ namespace RedPanda.PackageHandler
                 _window.Update();
             }
         }
+
         private void InstallUnityPackages(string[] array)
         {
             //If array is empty, cancels process.
             if (array == null)
-            {
                 return;
-            }
 
             //Adds packages one by one.
             for (int i = 0; i < array.Length; i++)
@@ -109,6 +119,7 @@ namespace RedPanda.PackageHandler
                 _unityPackagesToInstall.Add(array[i]);
             }
         }
+
         private string[] SetUnityPackages(IdeType type)
         {
             //Removes duplicates
@@ -120,26 +131,23 @@ namespace RedPanda.PackageHandler
             //Adjusts to array which is returned.
             //Last index is for ide.
             //Last index - 1 is for test framework.
-            string[] packages = new string[length + 2];
+            string[] packages = new string[length + 1];
 
             //Sets the package of ide which is selected.
             switch (type)
             {
                 case IdeType.VisualStudio:
-                    packages[packages.Length - 2] = "ide.visualstudio";
+                    packages[packages.Length - 1] = "ide.visualstudio";
                     break;
 
                 case IdeType.VisualStudioCode:
-                    packages[packages.Length - 2] = "ide.vscode";
+                    packages[packages.Length - 1] = "ide.vscode";
                     break;
 
                 case IdeType.Rider:
-                    packages[packages.Length - 2] = "ide.rider";
+                    packages[packages.Length - 1] = "ide.rider";
                     break;
             }
-
-            //This is for debugging from ide. So, adds to package list.
-            packages[packages.Length - 1] = "test-framework";
 
             for (int i = 0; i < length; i++)
             {
@@ -148,6 +156,7 @@ namespace RedPanda.PackageHandler
 
             return packages;
         }
+
         private static string GetUnityPackageName(UnityPackageTypes type)
         {
             //Returns the name of the package.
@@ -161,14 +170,13 @@ namespace RedPanda.PackageHandler
                 _ => "ugui",
             };
         }
+
         private void InstallGitPackages()
         {
             int count = _gitPackagesToInstall.Count;
 
             if (count == 0)
-            {
                 return;
-            }
 
             //Sets structure of lines
             string[] companyNames = new string[count];

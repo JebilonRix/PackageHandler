@@ -16,16 +16,18 @@ namespace RedPanda.PackageHandler
             string contents = await GetContents(url);
             ReplacePackageFile(contents);
         }
+
         private static async Task<string> GetContents(string url)
         {
             //Gets access of url.
-            using HttpClient client = new HttpClient();
+            using HttpClient client = new();
             HttpResponseMessage response = await client.GetAsync(url);
 
             //Reads string from response.
             string contents = await response.Content.ReadAsStringAsync();
             return contents;
         }
+
         private static void ReplacePackageFile(string contents)
         {
             //Finds manifest.
@@ -33,6 +35,7 @@ namespace RedPanda.PackageHandler
 
             //Writes lines which exists in gist repository to manifest.
             File.WriteAllText(existing, contents);
+
             Client.Resolve();
         }
     }

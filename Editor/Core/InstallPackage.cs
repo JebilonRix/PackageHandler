@@ -13,7 +13,10 @@ namespace RedPanda.PackageHandler
         #region Public Methods
 
         //Installs git packages.
-        public static void InstallGitPackages(string[] companyName, string[] packageName, string[] url) => AddGitPackages(companyName, packageName, url);
+        public static void InstallGitPackages(string[] companyName, string[] packageName, string[] url)
+        {
+            AddGitPackages(companyName, packageName, url);
+        }
 
         //Installs unity packages one by one.
         public static async void InstallUnityPackages(string[] packageName)
@@ -29,7 +32,10 @@ namespace RedPanda.PackageHandler
         #region Private Methods
 
         //Sets name of package.
-        private static string Name(string companyName, string packageName) => $"com.{companyName}.{packageName}";
+        private static string Name(string companyName, string packageName)
+        {
+            return $"com.{companyName}.{packageName}";
+        }
 
         //Loads unity package.
         private static async Task AddPackage(string packageName)
@@ -45,6 +51,7 @@ namespace RedPanda.PackageHandler
 
             Debug.Log($"{packageName} is loaded.");
         }
+
         private static void AddGitPackages(string[] companyName, string[] packageName, string[] url)
         {
             //Gets manfiest.
@@ -109,9 +116,7 @@ namespace RedPanda.PackageHandler
 
             //If there is no new package, it stops.
             if (localPackageName.Count == 0)
-            {
                 return;
-            }
 
             //Prepares lines
             string lines = "";
